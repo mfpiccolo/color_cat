@@ -1,4 +1,5 @@
 require 'RMagick'
+require "open-uri"
 
 module ColorCat
   class Process
@@ -13,9 +14,12 @@ module ColorCat
     end
 
     def call
-      process_image
-      normal = sort_by_decreasing_frequency(quantized)
-      get_pix(normal)
+      begin
+        process_image
+        normal = sort_by_decreasing_frequency(quantized)
+        get_pix(normal)
+      rescue OpenURI::HTTPError
+      end
     end
 
     def self.call(url, opts={})
@@ -74,7 +78,7 @@ module ColorCat
     private
 
     def process_image
-      @original = Magick::Image.read(url).first
+      @original = Magick::Image.read(save_to_tempfile(url).path).first
       @quantized = original.quantize(NUMBER_OF_COLORS, Magick::RGBColorspace)
     end
 
@@ -111,6 +115,14 @@ module ColorCat
       end
 
       self
+    end
+
+    def save_to_tempfile(url_or_path)
+      tempfile  = Tempfile.new("testfile.jpg")
+      tempfile.binmode
+      tempfile << open(url_or_path).read
+      tempfile.rewind
+      tempfile
     end
 
   end
