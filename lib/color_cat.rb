@@ -1,8 +1,6 @@
 require "color_cat/version"
 require "color_cat/colors"
 require "color_cat/process"
-require "rmagick"
-
 
 module ColorCat
   def self.included(base)

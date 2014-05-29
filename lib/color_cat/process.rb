@@ -1,3 +1,5 @@
+require 'RMagick'
+
 module ColorCat
   class Process
     attr_reader :url, :original, :quantized, :primary, :opts, :color_details
