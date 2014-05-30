@@ -1,4 +1,3 @@
-require 'RMagick'
 require "open-uri"
 
 module ColorCat
