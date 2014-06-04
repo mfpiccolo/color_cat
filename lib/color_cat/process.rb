@@ -17,7 +17,8 @@ module ColorCat
         process_image
         normal = sort_by_decreasing_frequency(quantized)
         get_pix(normal)
-      rescue OpenURI::HTTPError || Magick::ImageMagickError
+      rescue OpenURI::HTTPError, Magick::ImageMagickError
+        # TODO logging
       end
     end
 
